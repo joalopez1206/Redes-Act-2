@@ -4,7 +4,11 @@ import http_parser as hpar
 import pprint
 pprinter = pprint.PrettyPrinter(indent=4, sort_dicts=False)
 ADDRESS = ('localhost', 8000)
+PATH: str = input("Before initializing the server, i need a config file in the format .json, give me a path: ")
+configuration = load_json(PATH)
 httpServer = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+pprinter.pprint(configuration)
+exit(0)
 print("Initializing server")
 httpServer.bind(ADDRESS)
 httpServer.listen(3)
@@ -20,11 +24,11 @@ while True:
     msg = receiverSocket.recv(BUFFSIZE)
     print("parsing message...")
     parsed_msg = hpar.parse_http(msg.decode())
-    print("The http meesage is a:", hpar.isResponseOrRequest(parsed_msg))
+    print("The http meesage is a:", hpar.is_response_or_request(parsed_msg))
     pprinter.pprint(parsed_msg)
     print("Answering The request:")
     content_type = "text/html"
-    with open("hello-world.html") as fd:
+    with open("files/hello-world.html") as fd:
         str_to_append = fd.read()
     cabezera = {hpar.METHOD:"HTTP/1.1 200 OK", 'Server':'nginx', 'Content-Type':f'{content_type}', 'Content-Length':f'{len(str_to_append.encode())}'}
     cuerpo = str_to_append

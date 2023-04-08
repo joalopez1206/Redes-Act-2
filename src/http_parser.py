@@ -48,6 +48,6 @@ def to_http(parsed_msg: dict) -> str:
     return head_to_http(parsed_msg[HEAD]) + parsed_msg[BODY]
 
 
-def isResponseOrRequest(parsed_msg: dict) -> str:
+def is_response_or_request(parsed_msg: dict) -> str:
     head_line = parsed_msg[HEAD][METHOD]
     return mapeo[REQUEST] if head_line.startswith(REQUEST_SEQUENCES) else mapeo[RESPONSE]
