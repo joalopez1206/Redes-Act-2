@@ -1,11 +1,8 @@
-# lets initialize a sever in port 8000
-import socket
-
-prefix_protocol = "http://"
 from utils import *
 import http_parser as hpar
 import pprint
 
+prefix_protocol = "http://"
 example = False
 pprinter = pprint.PrettyPrinter(indent=4, sort_dicts=False)
 ADDRESS = ('localhost', 8000)
@@ -19,7 +16,7 @@ while True:
     print("Waiting for clients")
     receiverSocket, addr = httpServer.accept()
     print("A Message has been recived, establishing communication channel")
-    msg = receiverSocket.recv(BUFFSIZE)
+    msg = recive_full_msg(receiverSocket, BUFFSIZE)
     print("parsing message...")
     parsed_msg = hpar.parse_http(msg.decode())
     print(msg.decode().strip())
@@ -40,7 +37,7 @@ while True:
         receiverSocket.send(http_response.encode())
     request_head: dict = parsed_msg[hpar.HEAD]
     if hpar.get_url(request_head) in configuration["blocked"]:
-        receiverSocket.send("HTTP/1.1 403 Forbidden\r\n\r\n".encode())
+        send_full_msg(receiverSocket, "HTTP/1.1 403 Forbidden\r\n\r\n".encode())
         receiverSocket.close()
         print("Forbidden page!")
         continue
@@ -53,8 +50,8 @@ while True:
     sender_socket.connect(proxy_addr)
     print("Sending message")
     sender_msg = hpar.to_http(parsed_msg)
-    sender_socket.send(sender_msg.encode())
-    proxy_message = sender_socket.recv(BUFFSIZE)
+    send_full_msg(sender_socket, sender_msg.encode())
+    proxy_message = recive_full_msg(sender_socket, BUFFSIZE)
     print("Message received! re-sending to client and ending sender_socket.")
     sender_socket.close()
     parsed_message = hpar.parse_http(proxy_message.decode())
@@ -65,6 +62,6 @@ while True:
         parsed_message[hpar.BODY] = parsed_message[hpar.BODY].replace(old_word, new_word)
     new_c_len = len(parsed_message[hpar.BODY].encode())
     parsed_message[hpar.HEAD]["Content-Length"] = str(new_c_len)
-    receiverSocket.send(hpar.to_http(parsed_message).encode())
+    send_full_msg(receiverSocket, hpar.to_http(parsed_message).encode())
     print("Message sent! ending receiver socket")
     receiverSocket.close()
