@@ -5,7 +5,7 @@ REQUEST_SEQUENCES = ("GET", "POST", "HEAD")
 RESPONSE_SEQUENCE = "HTTP"
 END_HEAD_SEQUENCE = '\r\n\r\n'
 RESPONSE = 0
-REQUEST  = 1
+REQUEST = 1
 mapeo = {RESPONSE: "RESPONSE", REQUEST: "REQUEST"}
 
 
@@ -29,6 +29,12 @@ def parse_head(head: str):
 
 def parse_body(body) -> str:
     return body
+
+
+def get_url(head_struct_http: dict) -> str:
+    words = head_struct_http[METHOD].split(" ")
+    url = words[1]
+    return url
 
 
 def head_to_http(head_struct_http: dict) -> str:

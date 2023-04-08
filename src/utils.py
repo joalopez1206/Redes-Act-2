@@ -1,8 +1,10 @@
 import socket
 import json
+import types
 
-BUFFSIZE = 10000
+BUFFSIZE = 100000
 JSON_PATH_DEFAULT = "files/json_actividad_http.json"
+
 
 def load_json(path: str) -> dict:
     if path == "":
@@ -12,5 +14,9 @@ def load_json(path: str) -> dict:
     return mapeo
 
 
-def recive_full_msg(reciver_socket: socket.socket, buf_size: int, ):
-    ...
+def recive_full_msg(reciver_socket: socket.socket, buf_size: int) -> bytes:
+    return reciver_socket.recv(buf_size)
+
+
+def send_full_msg(sender_socket: socket.socket, msg: bytes) -> int:
+    return sender_socket.send(msg)
