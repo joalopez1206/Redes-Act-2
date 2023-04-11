@@ -18,12 +18,6 @@ Sec-Fetch-User: ?1""".replace("\n", "\r\n") + htp.END_HEAD_SEQUENCE
 class MyTestCase(unittest.TestCase):
     def test_idempotency(self):
         struct_http = htp.parse_http(testmsg)
-        print("="*10)
-        print("head", struct_http[htp.HEAD])
-        print("body:", struct_http[htp.BODY])
-        print('='*10)
-        print("The message is:")
-        print(htp.to_http(struct_http))
         self.assertEqual(htp.to_http(struct_http), testmsg)
 
 

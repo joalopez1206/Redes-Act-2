@@ -19,3 +19,11 @@ def receive_full_msg(reciver_socket: socket.socket, buf_size: int) -> bytes:
 
 def send_full_msg(sender_socket: socket.socket, msg: bytes) -> int:
     return sender_socket.send(msg)
+
+
+def censor_body(http_body: str, forbidden_words: dict, ) -> str:
+    for dictionary in forbidden_words:
+        old_word = list(dictionary.keys())[0]
+        new_word = dictionary[old_word]
+        http_body = http_body.replace(old_word, new_word)
+    return http_body
