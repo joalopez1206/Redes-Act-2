@@ -22,6 +22,7 @@ def parse_head(head: str):
     retdict[METHOD] = lines[0]
     # y luego recorremos todos los atributos
     for line in lines[1:]:
+        # si hay mas dos puntos en una linea, no nos importa!
         line = line.split(":", maxsplit=1)
         retdict[line[0]] = line[1].strip()
     return retdict
@@ -41,7 +42,7 @@ def head_to_http(head_struct_http: dict) -> str:
     retstr = ""
     retstr += head_struct_http[METHOD]
     retstr += "\r\n"
-    for atribute in head_struct_http:
+    for atribute in head_struct_http.keys():
         if atribute == METHOD:
             continue
         string_to_add = ": ".join([atribute, head_struct_http[atribute]])
