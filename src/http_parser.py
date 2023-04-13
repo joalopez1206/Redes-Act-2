@@ -9,12 +9,12 @@ REQUEST = 1
 mapeo = {RESPONSE: "RESPONSE", REQUEST: "REQUEST"}
 
 
-def parse_http(msg: str):
+def parse_http(msg: str) -> dict:
     head, body = msg.split(END_HEAD_SEQUENCE)
     return {HEAD: parse_head(head), BODY: parse_body(body)}
 
 
-def parse_head(head: str):
+def parse_head(head: str) -> dict:
     retdict = dict()
     # Primero separamos el head en \r\n
     lines = head.split("\r\n")

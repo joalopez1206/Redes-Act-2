@@ -56,10 +56,6 @@ while True:
     parsed_message = hpar.parse_http(proxy_message.decode())
     print("Censoring the message!")
     parsed_message[hpar.BODY] = censor_body(parsed_message[hpar.BODY], configuration["forbidden_words"])
-    # for dictionary in configuration["forbidden_words"]:
-    #     old_word = list(dictionary.keys())[0]
-    #     new_word = dictionary[old_word]
-    #     parsed_message[hpar.BODY] = parsed_message[hpar.BODY].replace(old_word, new_word)
     new_c_len = len(parsed_message[hpar.BODY].encode())
     parsed_message[hpar.HEAD]["Content-Length"] = str(new_c_len)
     send_full_msg(receiverSocket, hpar.to_http(parsed_message).encode())
