@@ -20,20 +20,6 @@ while True:
     parsed_received_message = hpar.parse_http(received_msg.decode())
     print(f"==\n{received_msg.decode().strip()}\n==")
     print("The http message is a:", hpar.is_response_or_request(parsed_received_message))
-    if example:
-        pprinter.pprint(parsed_received_message)
-        print("Answering The request:")
-        content_type = "text/html"
-        with open("files/hello-world.html") as fd:
-            str_to_append = fd.read()
-        cabezera = {hpar.METHOD: "HTTP/1.1 200 OK", 'Server': 'nginx', 'Content-Type': f'{content_type}',
-                    'Content-Length': f'{len(str_to_append.encode())}'}
-        cuerpo = str_to_append
-        cabezera["X-El-Que-Pregunta"] = parsed_received_message[hpar.HEAD]["User-Agent"]
-        estrucutra_respuesta = {hpar.HEAD: cabezera, hpar.BODY: cuerpo}
-        http_response = hpar.to_http(estrucutra_respuesta)
-        print(http_response)
-        receiverSocket.send(http_response.encode())
     request_head: dict = parsed_received_message[hpar.HEAD]
     if hpar.get_url(request_head) in configuration["blocked"]:
         send_full_msg(receiverSocket, "HTTP/1.1 403 Forbidden\r\n\r\n".encode())
@@ -56,10 +42,6 @@ while True:
     parsed_message = hpar.parse_http(proxy_message.decode())
     print("Censoring the message!")
     parsed_message[hpar.BODY] = censor_body(parsed_message[hpar.BODY], configuration["forbidden_words"])
-    # for dictionary in configuration["forbidden_words"]:
-    #     old_word = list(dictionary.keys())[0]
-    #     new_word = dictionary[old_word]
-    #     parsed_message[hpar.BODY] = parsed_message[hpar.BODY].replace(old_word, new_word)
     new_c_len = len(parsed_message[hpar.BODY].encode())
     parsed_message[hpar.HEAD]["Content-Length"] = str(new_c_len)
     send_full_msg(receiverSocket, hpar.to_http(parsed_message).encode())
