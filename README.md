@@ -18,3 +18,9 @@ En palabras simples, lo que hace el servidor proxy es:
 4. Finalmente cierra el socket de comunicacion con el server
 5. El proxy envia devuelta el mensaje al cliente
 6. Cierre de socket de comuniacion con el cliente
+
+Lo que no esta implementado es lo de verificar si corre con el tamaño de buffer modificado para que sea menor!
+
+Para correr el codigo basta con:
+Ejecturar proxy_http_server.py 
+y hacer los curls respectivos y proxear el navegador!
