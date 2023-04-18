@@ -20,20 +20,6 @@ while True:
     parsed_received_message = hpar.parse_http(received_msg.decode())
     print(f"==\n{received_msg.decode().strip()}\n==")
     print("The http message is a:", hpar.is_response_or_request(parsed_received_message))
-    if example:
-        pprinter.pprint(parsed_received_message)
-        print("Answering The request:")
-        content_type = "text/html"
-        with open("files/hello-world.html") as fd:
-            str_to_append = fd.read()
-        cabezera = {hpar.METHOD: "HTTP/1.1 200 OK", 'Server': 'nginx', 'Content-Type': f'{content_type}',
-                    'Content-Length': f'{len(str_to_append.encode())}'}
-        cuerpo = str_to_append
-        cabezera["X-El-Que-Pregunta"] = parsed_received_message[hpar.HEAD]["User-Agent"]
-        estrucutra_respuesta = {hpar.HEAD: cabezera, hpar.BODY: cuerpo}
-        http_response = hpar.to_http(estrucutra_respuesta)
-        print(http_response)
-        receiverSocket.send(http_response.encode())
     request_head: dict = parsed_received_message[hpar.HEAD]
     if hpar.get_url(request_head) in configuration["blocked"]:
         send_full_msg(receiverSocket, "HTTP/1.1 403 Forbidden\r\n\r\n".encode())
