@@ -1,16 +1,20 @@
 from utils import *
 import http_parser as hpar
-import pprint
 
-example = False
-pprinter = pprint.PrettyPrinter(indent=4, sort_dicts=False)
+LISTEN_Q_LEN = 3
 ADDRESS = ('localhost', 8000)
-PATH: str = input("Before initializing the server, i need a config file in the format '.json', give me a path: ")
+
+# Config PATH
+instr = ("Before initializing the server, i need a config file in the format '.json', give me a path: (by default is "
+         "the hardcoded path)")
+PATH: str = input(instr)
 configuration = load_json(PATH)
+
 httpServer = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 print("Initializing server")
 httpServer.bind(ADDRESS)
-httpServer.listen(3)
+httpServer.listen(LISTEN_Q_LEN)
+
 while True:
     print("Waiting for clients")
     receiverSocket, addr = httpServer.accept()
@@ -22,7 +26,7 @@ while True:
     parsed_received_message = hpar.parse_http(received_msg.decode())
     print(f"==\n{received_msg.decode().strip()}\n==")
 
-    print("The http message is a:", hpar.is_response_or_request(parsed_received_message))
+    # print("The http message is a:", hpar.is_response_or_request(parsed_received_message))
     request_head: dict = parsed_received_message[hpar.HEAD]
 
     if hpar.get_url(request_head) in configuration["blocked"]:
