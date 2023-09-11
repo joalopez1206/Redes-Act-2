@@ -2,7 +2,7 @@ import socket
 import json
 from http_parser import parse_head
 
-BUFFSIZE = 5
+BUFFSIZE=210
 JSON_PATH_DEFAULT = "files/json_actividad_http.json"
 
 
