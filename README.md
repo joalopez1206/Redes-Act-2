@@ -39,18 +39,26 @@ A este punto del commit pasan todos los tests!
 Para probarlos, active el proxy en su navegador y acceda a los dominios provistos por la profesora en EOL.
 
 ## Experimentos
-1. Pagina forbidden:
+1. **Página forbidden**:
 Basta con ver que en esta [pagina](http://cc4303.bachmann.cl/secret), sin el proxy muestra los contenidos, 
-en cambio si usamos el proxy, no obtenemos nada, y si vemos las herramientas de desarrolladores obtenemos la respuesta
+en cambio, si usamos el proxy, no obtenemos nada, y si vemos las herramientas de desarrolladores obtenemos la respuesta
 ```
 403 Forbidden
 ```
-2. Cambios en la pagina inicial:
-Si vemos esta  [pagina](http://cc4303.bachmann.cl) Se añade el header X-ElQueResponde y tambien como side-effect 
+2. **Cambios en la pagina inicial**:
+Si vemos esta [página](http://cc4303.bachmann.cl) Se añade el header X-ElQueResponde y tambien como side-effect 
 se cambiaron las palabras prohibidas.
 
-3. Cambios en 2 paginas:
-Como se comentó antes, se cambio las palabras prohibidas en http://cc4303.bachmann.cl y tambien en 
+3. **Cambios en 2 páginas**:
+Como se comentó antes, se cambió las palabras prohibidas en http://cc4303.bachmann.cl y tambien en 
 http://cc4303.bachmann.cl/replace
 
-4. 
+4. **Tamaño del buffer**:
+En el modulo [utils](src/utils.py) hay una variable que se llama `BUFFSIZE` que setea el tamaño del buffer.
+Notemos que para el ejemplo de entrar a http://cc4303.bachmann.cl el tamaño del header son de 195 bytes.
+   - Para un tamaño más grande que los headers pero menor que el mensaje
+   basta tomar `BUFFSIZE=210`.
+   - Para el otro caso basta con usar un `BUFFSIZE=30` ya que ahi estamos entre el tamaño del head y 
+   el tamaño del startline.
+
+Reemplazando esa variable, podemos ver que en ambos casos funcionan todos los tests.

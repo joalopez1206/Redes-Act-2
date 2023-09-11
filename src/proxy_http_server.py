@@ -26,7 +26,6 @@ while True:
     parsed_received_message = hpar.parse_http(received_msg.decode())
     print(f"==\n{received_msg.decode().strip()}\n==")
 
-    # print("The http message is a:", hpar.is_response_or_request(parsed_received_message))
     request_head: dict = parsed_received_message[hpar.HEAD]
 
     if hpar.get_url(request_head) in configuration["blocked"]:
