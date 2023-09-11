@@ -1,6 +1,9 @@
 # HTTP server
+
 ## Resumen y Instrucciones
+
 Hay 3 modulos `http_parser, proxy_http_server y utils.py`
+
 - El modulo `http_parser`: se encarga de parsear los http messages para que despues
 server pueda interpretarlos para hacer alguna accion!
 
@@ -18,11 +21,11 @@ En resumen lo que hace es:
   6. Cierre de socket de comuniacion con el cliente
 
 - El modulo `utils`: implementa las funciones `send_full_msg` y `recv_full_msg` y algunas
-funciones de calidad de vida como `load_json`.
+funciones de calidad de vida como `load_json`, la cual carga las configuraciones de la carpeta `src/files/`
 
 Notar que en todo este codigo se asume un flujo de informacion, de esta manera:
 
-```
+```txt
 1. Envia un mensaje el cliente por el proxy
     cliente ---> proxy ----> server 
 2. El server envia la respuesta al cliente y le llega al proxy
@@ -39,12 +42,15 @@ A este punto del commit pasan todos los tests!
 Para probarlos, active el proxy en su navegador y acceda a los dominios provistos por la profesora en EOL.
 
 ## Experimentos
+
 1. **Página forbidden**:
-Basta con ver que en esta [pagina](http://cc4303.bachmann.cl/secret), sin el proxy muestra los contenidos, 
+Basta con ver que en esta [pagina](http://cc4303.bachmann.cl/secret), sin el proxy muestra los contenidos,
 en cambio, si usamos el proxy, no obtenemos nada, y si vemos las herramientas de desarrolladores obtenemos la respuesta
-```
+
+```txt
 403 Forbidden
 ```
+
 2. **Cambios en la pagina inicial**:
 Si vemos esta [página](http://cc4303.bachmann.cl) Se añade el header X-ElQueResponde y tambien como side-effect 
 se cambiaron las palabras prohibidas.
